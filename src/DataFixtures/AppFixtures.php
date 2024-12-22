@@ -21,6 +21,13 @@ class AppFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
+        function getRandomDate(): \DateTime {
+            $start = strtotime('2023-01-01');
+            $end = strtotime('2025-12-31');
+            $timestamp = mt_rand($start, $end);
+            return (new \DateTime())->setTimestamp($timestamp);
+        }
+
         $users = [
             ['username' => 'alice', 'email' => 'alice@example.com'],
             ['username' => 'bob', 'email' => 'bob@example.com'],
@@ -115,73 +122,53 @@ class AppFixtures extends Fixture
 
         $tasks = [
             [
-                'title' => 'Implement Authentication',
+                'name' => 'Implement Authentication',
                 'description' => 'Develop and integrate authentication mechanisms for the application. This includes setting up user registration, login, password recovery, and session management.',
-                'status' => TaskStatusEnum::TO_DO,
-                'priority' => TaskPriorityEnum::HIGH,
                 'dueDate' => '2023-12-11'
             ],
             [
-                'title' => 'Design Database Schema',
+                'name' => 'Design Database Schema',
                 'description' => null,
-                'status' => TaskStatusEnum::IN_PROGRESS,
-                'priority' => TaskPriorityEnum::MEDIUM,
                 'dueDate' => '2023-11-15'
             ],
             [
-                'title' => 'Develop API Endpoints',
+                'name' => 'Develop API Endpoints',
                 'description' => 'Implement RESTful API endpoints to support frontend and mobile applications. This includes creating controllers, services, and ensuring proper request validation and error handling.',
-                'status' => TaskStatusEnum::TO_DO,
-                'priority' => TaskPriorityEnum::HIGH,
                 'dueDate' => '2023-12-22'
             ],
             [
-                'title' => 'Setup CI/CD Pipeline',
+                'name' => 'Setup CI/CD Pipeline',
                 'description' => null,
-                'status' => TaskStatusEnum::IN_PROGRESS,
-                'priority' => TaskPriorityEnum::HIGH,
                 'dueDate' => '2023-04-05'
             ],
             [
-                'title' => 'Optimize Performance',
+                'name' => 'Optimize Performance',
                 'description' => 'Analyze and optimize application performance to handle increased load. This includes profiling the application, optimizing code, and scaling infrastructure as needed.',
-                'status' => TaskStatusEnum::TO_DO,
-                'priority' => TaskPriorityEnum::MEDIUM,
                 'dueDate' => '2024-01-10'
             ],
             [
-                'title' => 'Implement User Roles',
+                'name' => 'Implement User Roles',
                 'description' => 'Define and implement user roles and permissions within the application.',
-                'status' => TaskStatusEnum::TO_DO,
-                'priority' => TaskPriorityEnum::HIGH,
                 'dueDate' => '2023-08-16'
             ],
             [
-                'title' => 'Create Unit Tests',
+                'name' => 'Create Unit Tests',
                 'description' => 'Write unit tests for the application to ensure code quality and reliability. This involves setting up a testing framework and writing tests for critical components.',
-                'status' => TaskStatusEnum::IN_PROGRESS,
-                'priority' => TaskPriorityEnum::MEDIUM,
                 'dueDate' => '2023-12-25'
             ],
             [
-                'title' => 'Setup Logging',
+                'name' => 'Setup Logging',
                 'description' => 'Implement logging mechanisms to track application events and errors.',
-                'status' => TaskStatusEnum::TO_DO,
-                'priority' => TaskPriorityEnum::LOW,
                 'dueDate' => '2024-11-05'
             ],
             [
-                'title' => 'Integrate Third-Party Services',
+                'name' => 'Integrate Third-Party Services',
                 'description' => 'Integrate third-party services such as payment gateways, email providers, and analytics tools. This involves setting up API connections and ensuring secure data exchange.',
-                'status' => TaskStatusEnum::TO_DO,
-                'priority' => TaskPriorityEnum::HIGH,
                 'dueDate' => '2024-05-21'
             ],
             [
-                'title' => 'Conduct Code Review',
+                'name' => 'Conduct Code Review',
                 'description' => 'Perform code reviews to ensure code quality and adherence to best practices.',
-                'status' => TaskStatusEnum::IN_PROGRESS,
-                'priority' => TaskPriorityEnum::MEDIUM,
                 'dueDate' => '2024-06-30'
             ],
         ];
@@ -199,19 +186,6 @@ class AppFixtures extends Fixture
             'The project is on track.'
         ];
 
-        // Users
-        $userEntities = [];
-        foreach ($users as $userData) {
-            $user = new User();
-            $user->setUsername($userData['username']);
-            $user->setEmail($userData['email']);
-            $user->setPlainPassword('password');
-            $user->setProfilePicture('https://avatar.iran.liara.run/public/'.rand(1, 100));
-
-            $manager->persist($user);
-            $userEntities[] = $user;
-        }
-
         // Teams
         $teamEntities = [];
         foreach ($teams as $teamData) {
@@ -221,6 +195,25 @@ class AppFixtures extends Fixture
 
             $manager->persist($team);
             $teamEntities[] = $team;
+        }
+
+        // Users
+        $userEntities = [];
+        foreach ($users as $userData) {
+            $user = new User();
+            $user->setUsername($userData['username']);
+            $user->setEmail($userData['email']);
+            $user->setPlainPassword('password');
+            $user->setProfilePicture('https://avatar.iran.liara.run/public/'.rand(1, 100));
+
+            // Assign teams to users
+            $assignedTeams = (array)array_rand($teamEntities, rand(1, 3));
+            foreach ($assignedTeams as $teamIndex) {
+                $user->addTeam($teamEntities[$teamIndex]);
+            }
+
+            $manager->persist($user);
+            $userEntities[] = $user;
         }
 
         // Projects
@@ -254,11 +247,11 @@ class AppFixtures extends Fixture
             foreach ($assignedTasks as $taskIndex) {
                 $taskData = $tasks[$taskIndex];
                 $task = new Task();
-                $task->setTitle($taskData['title']);
+                $task->setName($taskData['name']);
                 $task->setDescription($taskData['description']);
-                $task->setStatus($taskData['status']);
-                $task->setPriority($taskData['priority']);
-                $task->setDueDate(new \DateTime($taskData['dueDate']));
+                $task->setStatus(TaskStatusEnum::cases()[array_rand(TaskStatusEnum::cases())]);
+                $task->setPriority(TaskPriorityEnum::cases()[array_rand(TaskPriorityEnum::cases())]);
+                $task->setDueDate(getRandomDate());
                 $task->setProject($project);
                 $task->setAssignedTo($projectUsers[array_rand($projectUsers)]);
 

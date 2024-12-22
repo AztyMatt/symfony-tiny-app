@@ -1,0 +1,8 @@
+<div class="p-4 bg-white border shadow rounded">
+    <div class="flex items-center space-x-2 mb-4">
+        <img src="{{ comment.author.profilePicture }}" alt="" class="h-8 w-8 object-cover rounded-full">
+        <span class="font-bold">{{ comment.author.username }}</span>
+    </div>
+    <p class="text-gray-600">{{ comment.content }}</p>
+    <p class="text-sm text-gray-600 text-right mt-2">Published the {{ comment.creationDate|date('Y-m-d') }}</p>
+</div>

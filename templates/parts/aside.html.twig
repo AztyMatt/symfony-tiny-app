@@ -1,50 +1,26 @@
-{% block javascripts %}
-        <script>
-        function updateTeamImage(select) {
-            var selectedOption = select.options[select.selectedIndex];
-            var imageSrc = selectedOption.getAttribute('data-image');
-            document.getElementById('team-image').src = imageSrc;
-        }
-
-        // Set default image on page load
-        document.addEventListener('DOMContentLoaded', function() {
-            var select = document.getElementById('team');
-            updateTeamImage(select);
-        });
-    </script>
-{% endblock %}
-
 <aside class="flex flex-col w-1/5 bg-blue-500 text-white">
     <form class="flex flex-col space-y-4 border-blue-600 border-b-2">
         <div class="flex items-center space-x-4 p-4">
-            <img id="team-image" src="" alt="Team Image" class="h-8 w-8 object-contain rounded" />
+            <img id="team-image" src="Logo of your team" alt="Team Image" class="h-8 w-8 object-contain rounded" />
             <select id="team" name="team" class="flex-grow p-y-2 h-full bg-blue-500" onchange="updateTeamImage(this)">
-                <option value="team1" data-image="https://avatar.iran.liara.run/public/4">Team 1</option>
-                <option value="team2" data-image="https://avatar.iran.liara.run/public/76">Team 2</option>
-                <option value="team3" data-image="https://avatar.iran.liara.run/public/72">Team 3</option>
+                {% for team in app.user.teams %}
+                    <option value="{{ team.id }}" data-image="{{ team.logo }}">{{ team.name }}</option>
+                {% endfor %}
             </select>
         </div>
     </form>
     <div class="h-full">
         <ul class="overflow-y-auto h-full pb-2">
-            <li class="flex justify-between hover:bg-blue-600">
-                <a href="/project" class="flex justify-between items-center w-full p-4">
-                    <span class="font-bold">Project 1</span>
-                    <span>(In progress)</span>
-                </a>
-            </li>
-            <li class="flex justify-between hover:bg-blue-600">
-                <a href="/project" class="flex justify-between items-center w-full p-4">
-                    <span class="font-bold">Project 2</span>
-                    <span>(Planned)</span>
-                </a>
-            </li>
-            <li class="flex justify-between hover:bg-blue-600">
-                <a href="/project" class="flex justify-between items-center w-full p-4">
-                    <span class="font-bold">Project 3</span>
-                    <span>(Archived)</span>
-                </a>
-            </li>
+            {% for team in app.user.teams %}
+                {% for project in team.projects %}
+                    <li class="project-item flex justify-between {% if project.status.name ==  'ARCHIVED' %} opacity-50 {% endif %} hover:bg-blue-600" data-team-id="{{ team.id }}">
+                        <a href="/project/{{ project.id }}" class="flex flex-col justify-between gap-1 w-full p-4">
+                            <span class="font-bold">{{ project.name }}</span>
+                            <span class="text-sm">({{ project.status.value }})</span>
+                        </a>
+                    </li>
+                {% endfor %}
+            {% endfor %}
         </ul>
     </div>
 </aside>

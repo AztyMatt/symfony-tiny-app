@@ -19,7 +19,7 @@ class Task
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $title = null;
+    private ?string $name = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
@@ -56,14 +56,14 @@ class Task
         return $this->id;
     }
 
-    public function getTitle(): ?string
+    public function getName(): ?string
     {
-        return $this->title;
+        return $this->name;
     }
 
-    public function setTitle(string $title): static
+    public function setName(string $name): static
     {
-        $this->title = $title;
+        $this->name = $name;
 
         return $this;
     }
@@ -113,7 +113,7 @@ class Task
     {
         $this->dueDate = $dueDate->setTime(0, 0, 0);
 
-        if ($dueDate < new \DateTime()) {
+        if ($dueDate < new \DateTime() && $this->status === TaskStatusEnum::TO_DO) {
             $this->status = TaskStatusEnum::IN_PROGRESS;
         }
 

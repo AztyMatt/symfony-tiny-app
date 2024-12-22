@@ -1,59 +1,40 @@
 {% extends 'parts/base.html.twig' %}
 
-{% block title %}NextTask - Task 1{% endblock %}
+{% block title %}NextTask - {{ task.name }}{% endblock %}
 
 {% block javascripts %}
 {% endblock %}
 
 {% block body %}
     <header class="p-4 w-full flex justify-between items-center border-b-2 border-gray-200 sticky top-0 bg-white">
-        <h1 class="text-2xl font-bold">Task 1</h1>
+        <h1 class="text-2xl font-bold">{{ task.name }}</h1>
         <div class="flex space-x-4">
-            <img src="https://avatar.iran.liara.run/public/4" alt="" class="h-8 w-8 object-cover">
+            <img src="{{ task.assignedTo.profilePicture }}" alt="" class="h-8 w-8 object-cover">
         </div>
     </header>
 
     <div class="flex flex-col overflow-y-auto h-full w-full">
         <div class="w-full p-8 bg-gray-100 flex flex-col gap-12 shadow">
             <div class="flex flex-col gap-4">
-                <h2 class="text-xl font-bold">Status: <span class="text-blue-500">In Progress</span> | Priority: <span class="text-blue-500">Low</span></h2>
-                <p class="text-gray-600">Project description: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam.</p>
+                <h2 class="text-xl font-bold">Status: <span class="text-blue-500">{{ task.status.value }}</span> | Priority: <span class="text-blue-500">{{ task.priority.value }}</span></h2>
+                {% if task.description %}
+                    <p class="text-gray-600">{{ task.description }}</p>
+                {% endif %}
             </div>
             <div class="flex justify-end">
-                <p class="text-sm text-gray-600">Period from <span class="font-bold">2023-01-01</span> to <span class="font-bold">2023-12-31</span></p>
+                <p class="text-sm text-gray-600">To be done by <span class="text-blue-500 font-bold">{{ task.dueDate|date('Y-m-d') }}</span></p>
             </div>
         </div>
 
-         <div class="flex flex-col gap-10 w-full p-8 h-fit">
+        <div class="flex flex-col gap-10 w-full p-8 h-fit">
             <div>
                 <div class="flex justify-start pb-2">
                     <h2 class="text-xl font-bold">Comments</h2>
                 </div>
                 <div class="space-y-4">
-                    <div class="p-4 bg-white border shadow rounded">
-                        <div class="flex items-center space-x-2 mb-4">
-                            <img src="https://avatar.iran.liara.run/public/4" alt="" class="h-8 w-8 object-cover rounded-full">
-                            <span class="font-bold">User 1</span>
-                        </div>
-                        <p class="text-gray-600">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                        <p class="text-sm text-gray-600 text-right mt-2">2023-01-01</p>
-                    </div>
-                    <div class="p-4 bg-white border shadow rounded">
-                        <div class="flex items-center space-x-2 mb-4">
-                            <img src="https://avatar.iran.liara.run/public/76" alt="" class="h-8 w-8 object-cover rounded-full">
-                            <span class="font-bold">User 2</span>
-                        </div>
-                        <p class="text-gray-600">Integer nec odio. Praesent libero. Sed cursus ante dapibus diam.</p>
-                        <p class="text-sm text-gray-600 text-right mt-2">2023-01-02</p>
-                    </div>
-                    <div class="p-4 bg-white border shadow rounded">
-                        <div class="flex items-center space-x-2 mb-4">
-                            <img src="https://avatar.iran.liara.run/public/72" alt="" class="h-8 w-8 object-cover rounded-full">
-                            <span class="font-bold">User 3</span>
-                        </div>
-                        <p class="text-gray-600">Sed nisi. Nulla quis sem at nibh elementum imperdiet.</p>
-                        <p class="text-sm text-gray-600 text-right mt-2">2023-01-03</p>
-                    </div>
+                    {% for comment in task.comments %}
+                        {% include('parts/comment.html.twig') %}
+                    {% endfor %}
                 </div>
                 <div class="flex justify-end mt-4">
                     <button class="px-4 py-2 bg-blue-500 text-white rounded">Add Comment</button>

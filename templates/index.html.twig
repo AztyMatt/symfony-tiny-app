@@ -8,12 +8,29 @@
 {% block body %}
     <div class="w-fit flex flex-col items-center justify-center h-full gap-8">
         <div class="flex flex-col gap-1">
-            <h1 class="text-4xl font-bold">Welcome to NextTask</h1>
-            <p class="text-lg">NextTask is a simple task manager.</p>
+            <h1 class="text-4xl font-bold">
+                Welcome
+                {% if app.user %}
+                    <span class="text-blue-500">{{ app.user.username }}</span> !
+                {% else %}
+                    to NextTask
+                {% endif %}
+            </h1>
+            {% if not app.user %}
+                <p class="text-lg">NextTask is a simple task manager.</p>
+            {% else %}
+                <div class="flex flex-col pt-2 w-fit">
+                    <p class="text-lg font-semibold">You are in: <span class="text-blue-500 font-bold">{{ app.user.teams|length }} teams</span></p>
+                    <p class="text-lg font-semibold">You contribute to: <span class="text-blue-500 font-bold">{{ app.user.projects|length }} projects</span></p>
+                    <p class="text-lg font-semibold">You have: <span class="text-blue-500 font-bold">{{ app.user.tasks|length }} tasks</span></p>
+                    <p class="text-lg font-semibold">You have posted: <span class="text-blue-500 font-bold">{{ app.user.comments|length }} comments</span></p></div>
+            {% endif %}
         </div>
-        <div class="w-full flex flex-row gap-2">
-            <a href="{{ path('app_login') }}" class="px-4 py-2 bg-blue-500 text-white rounded w-full text-center">Login</a>
-            <a href="{{ path('app_register') }}" class="px-4 py-2 bg-blue-500 text-white rounded w-full text-center">Register</a>
-        </div>
+        {% if not app.user %}
+            <div class="w-full flex flex-row gap-2">
+                <a href="{{ path('app_login') }}" class="px-4 py-2 bg-blue-500 text-white rounded w-full text-center">Login</a>
+                <a href="{{ path('app_register') }}" class="px-4 py-2 bg-blue-500 text-white rounded w-full text-center">Register</a>
+            </div>
+        {% endif %}
     </div>
 {% endblock %}

@@ -31,9 +31,13 @@ class Team
     #[ORM\OneToMany(targetEntity: Project::class, mappedBy: 'team', orphanRemoval: true)]
     private Collection $projects;
 
+    #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'teams')]
+    private Collection $members;
+
     public function __construct()
     {
         $this->projects = new ArrayCollection();
+        $this->members = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -102,6 +106,33 @@ class Team
             if ($project->getTeam() === $this) {
                 $project->setTeam(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, User>
+     */
+    public function getMembers(): Collection
+    {
+        return $this->members;
+    }
+
+    public function addMember(User $member): static
+    {
+        if (!$this->members->contains($member)) {
+            $this->members->add($member);
+            $member->addTeam($this);
+        }
+
+        return $this;
+    }
+
+    public function removeMember(User $member): static
+    {
+        if ($this->members->removeElement($member)) {
+            $member->removeTeam($this);
         }
 
         return $this;

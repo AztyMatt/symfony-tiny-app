@@ -5,12 +5,39 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
+use App\Repository\ProjectRepository;
+use App\Enum\TaskStatusEnum;
+use App\Repository\UserRepository;
+use App\Entity\User;
 
 class ProjectController extends AbstractController
 {
-    #[Route('/project', name: 'project')]
-    public function index(): Response
+    #[IsGranted('IS_AUTHENTICATED_FULLY')]
+    #[Route('/project/{id}', name: 'project')]
+    public function index(int $id, ProjectRepository $projectRepository, UserRepository $userRepository): Response
     {
-        return $this->render('project.html.twig');
+        $project = $projectRepository->find($id);
+
+        if (!$project) {
+            return $this->redirectToRoute('home');
+        }
+
+        $taskStatuses = TaskStatusEnum::cases();
+
+        // $members = $project->getMembers();
+        // $memberProfilePictures = [];
+
+        // foreach ($members as $member) {
+        //     if ($member instanceof User) {
+        //         $memberProfilePictures[] = $member->getProfilePicture();
+        //     }
+        // }
+
+        return $this->render('project.html.twig', [
+            'project' => $project,
+            'taskStatuses' => $taskStatuses,
+            // 'memberProfilePictures' => $memberProfilePictures,
+        ]);
     }
 }

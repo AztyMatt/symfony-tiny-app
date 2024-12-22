@@ -1,397 +1,95 @@
 {% extends 'parts/base.html.twig' %}
 
-{% block title %}NextTask - Project 1{% endblock %}
+{% block title %}NextTask - {{ project.name }}{% endblock %}
 
 {% block javascripts %}
 {% endblock %}
 
 {% block body %}
-        <header class="p-4 w-full flex justify-between items-center border-b-2 border-gray-200 shadow sticky top-0 bg-white">
-            <h1 class="text-2xl font-bold">Project 1</h1>
-            <div class="flex space-x-4">
-                <img src="https://avatar.iran.liara.run/public/4" alt="" class="h-8 w-8 object-cover">
-                <img src="https://avatar.iran.liara.run/public/76" alt="" class="h-8 w-8 object-cover">
-                <img src="https://avatar.iran.liara.run/public/72" alt="" class="h-8 w-8 object-cover">
+    <header class="p-4 w-full flex justify-between items-center border-b-2 border-gray-200 shadow sticky top-0 bg-white">
+        <h1 class="text-2xl font-bold">{{ project.name }}</h1>
+        <div class="flex space-x-4">
+            {# {% for memberProfilePicture in memberProfilePictures %}
+                <img src="{{ memberProfilePicture }}" alt="" class="h-8 w-8 object-cover">
+            {% endfor %} #}
+        </div>
+    </header>
+
+    <div class="flex flex-col overflow-y-auto h-full w-full">
+        <div class="w-full p-8 bg-gray-100 flex flex-col shadow">
+            <div class="flex flex-col gap-4">
+                <h2 class="text-xl font-bold">Status: <span class="text-blue-500">{{ project.status.value }}</span></h2>
+                {% if project.description %}
+                    <p class="text-gray-600 pb-12">{{ project.description }}</p>
+                {% endif %}
             </div>
-        </header>
-
-        <div class="flex flex-col overflow-y-auto h-full w-full">
-            <div class="w-full p-8 bg-gray-100 flex flex-col shadow">
-                <div class="flex flex-col gap-4">
-                    <h2 class="text-xl font-bold">Status: <span class="text-blue-500">In Progress</span></h2>
-                    <p class="text-gray-600 pb-12">Description du projet: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer nec odio. Praesent libero. Sed cursus ante dapibus diam.</p>
-                </div>
-                <div class="flex justify-end">
-                    <p class="text-sm text-gray-600">Period from <span class="font-bold">2023-01-01</span> to <span class="font-bold">2023-12-31</span></p>
-                </div>
-            </div>
-
-            <div class="flex flex-col gap-10 w-full p-8 h-fit">
-                <div>
-                    <div class="flex justify-start pb-2">
-                        <h2 class="text-xl font-bold">To do</h2>
-                    </div>
-                    <table class="w-full table-auto border-collapse">
-                        <thead>
-                            <tr class="border-b-2 border-gray-300">
-                                <th class="text-left p-2">Task</th>
-                                <th class="text-left p-2">Description</th>
-                                <th class="text-left p-2">Status</th>
-                                <th class="text-left p-2">Priority</th>
-                                <th class="text-left p-2">Date</th>
-                                <th class="text-left p-2">Comments</th>
-                                <th class="text-left p-2">User</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr class="border-b-2 border-gray-100 w-full hover:bg-gray-200 h-full">
-                                <td class="p-2 w-44 max-w-44 truncate h-full">
-                                    <span class="flex flex-row gap-2">
-                                        <a href="/task" class="flex flex-row">
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 text-blue-500">
-                                                <path stroke-linecap="round" stroke-linejoin="round" d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" />
-                                            </svg>
-                                        </a>
-                                        Task 1
-                                    </span>
-                                </td>
-                                <td class="p-2 w-60 max-w-60 truncate">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</td>
-                                <td class="p-2">
-                                    <select>
-                                        <option>TO_DO</option>
-                                        <option>IN_PROGRESS</option>
-                                        <option>DONE</option>
-                                    </select>
-                                </td>
-                                <td class="p-2">
-                                    <select>
-                                        <option>LOW</option>
-                                        <option>MEDIUM</option>
-                                        <option>HIGH</option>
-                                    </select>
-                                </td>
-                                <td class="p-2 w-40 max-w-40 truncate">2024-12-21</td>
-                                <td class="p-2">5</td>
-                                <td class="p-2"><img src="https://avatar.iran.liara.run/public/4" alt="" class="h-8 w-8 object-cover"></td>
-                            </tr>
-                            <tr class="border-b-2 border-gray-100 w-full hover:bg-gray-200">
-                                <td class="p-2 w-44 max-w-44 truncate">
-                                    <span class="flex flex-row gap-2">
-                                        <a href="/task" class="flex flex-row">
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 text-blue-500">
-                                                <path stroke-linecap="round" stroke-linejoin="round" d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" />
-                                            </svg>
-                                        </a>
-                                        Task 2
-                                    </span>
-                                </td>
-                                <td class="p-2 w-60 max-w-60 truncate">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</td>
-                                <td class="p-2">
-                                    <select>
-                                        <option>TO_DO</option>
-                                        <option>IN_PROGRESS</option>
-                                        <option>DONE</option>
-                                    </select>
-                                </td>
-                                <td class="p-2">
-                                    <select>
-                                        <option>LOW</option>
-                                        <option>MEDIUM</option>
-                                        <option>HIGH</option>
-                                    </select>
-                                </td>
-                                <td class="p-2 w-40 max-w-40 truncate">2024-12-21</td>
-                                <td class="p-2">5</td>
-                                <td class="p-2"><img src="https://avatar.iran.liara.run/public/4" alt="" class="h-8 w-8 object-cover"></td>
-                            </tr>
-                            <tr class="border-b-2 border-gray-100 w-full hover:bg-gray-200">
-                                <td class="p-2 w-44 max-w-44 truncate">
-                                    <span class="flex flex-row gap-2">
-                                        <a href="/task" class="flex flex-row">
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 text-blue-500">
-                                                <path stroke-linecap="round" stroke-linejoin="round" d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" />
-                                            </svg>
-                                        </a>
-                                        Task 3
-                                    </span>
-                                </td>
-                                <td class="p-2 w-60 max-w-60 truncate">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</td>
-                                <td class="p-2">
-                                    <select>
-                                        <option>TO_DO</option>
-                                        <option>IN_PROGRESS</option>
-                                        <option>DONE</option>
-                                    </select>
-                                </td>
-                                <td class="p-2">
-                                    <select>
-                                        <option>LOW</option>
-                                        <option>MEDIUM</option>
-                                        <option>HIGH</option>
-                                    </select>
-                                </td>
-                                <td class="p-2 w-40 max-w-40 truncate">2024-12-21</td>
-                                <td class="p-2">5</td>
-                                <td class="p-2"><img src="https://avatar.iran.liara.run/public/4" alt="" class="h-8 w-8 object-cover"></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div>
-                    <div class="flex justify-start pb-2">
-                        <h2 class="text-xl font-bold">In progress</h2>
-                    </div>
-                    <table class="w-full table-auto border-collapse">
-                        <thead>
-                            <tr class="border-b-2 border-gray-300">
-                                <th class="text-left p-2">Task</th>
-                                <th class="text-left p-2">Description</th>
-                                <th class="text-left p-2">Status</th>
-                                <th class="text-left p-2">Priority</th>
-                                <th class="text-left p-2">Date</th>
-                                <th class="text-left p-2">Comments</th>
-                                <th class="text-left p-2">User</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr class="border-b-2 border-gray-100 w-full hover:bg-gray-200">
-                                <td class="p-2 w-44 max-w-44 truncate">
-                                    <span class="flex flex-row gap-2">
-                                        <a href="/task" class="flex flex-row">
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 text-blue-500">
-                                                <path stroke-linecap="round" stroke-linejoin="round" d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" />
-                                            </svg>
-                                        </a>
-                                        Task 1
-                                    </span>
-                                </td>
-                                <td class="p-2 w-60 max-w-60 truncate">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</td>
-                                <td class="p-2">
-                                    <select>
-                                        <option>TO_DO</option>
-                                        <option>IN_PROGRESS</option>
-                                        <option>DONE</option>
-                                    </select>
-                                </td>
-                                <td class="p-2">
-                                    <select>
-                                        <option>LOW</option>
-                                        <option>MEDIUM</option>
-                                        <option>HIGH</option>
-                                    </select>
-                                </td>
-                                <td class="p-2 w-40 max-w-40 truncate">2024-12-21</td>
-                                <td class="p-2">5</td>
-                                <td class="p-2"><img src="https://avatar.iran.liara.run/public/4" alt="" class="h-8 w-8 object-cover"></td>
-                            </tr>
-                            <tr class="border-b-2 border-gray-100 w-full hover:bg-gray-200">
-                                <td class="p-2 w-44 max-w-44 truncate">
-                                    <span class="flex flex-row gap-2">
-                                        <a href="/task" class="flex flex-row">
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 text-blue-500">
-                                                <path stroke-linecap="round" stroke-linejoin="round" d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" />
-                                            </svg>
-                                        </a>
-                                        Task 2
-                                    </span>
-                                </td>
-                                <td class="p-2 w-60 max-w-60 truncate">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</td>
-                                <td class="p-2">
-                                    <select>
-                                        <option>TO_DO</option>
-                                        <option>IN_PROGRESS</option>
-                                        <option>DONE</option>
-                                    </select>
-                                </td>
-                                <td class="p-2">
-                                    <select>
-                                        <option>LOW</option>
-                                        <option>MEDIUM</option>
-                                        <option>HIGH</option>
-                                    </select>
-                                </td>
-                                <td class="p-2 w-40 max-w-40 truncate">2024-12-21</td>
-                                <td class="p-2">5</td>
-                                <td class="p-2"><img src="https://avatar.iran.liara.run/public/4" alt="" class="h-8 w-8 object-cover"></td>
-                            </tr>
-                            <tr class="border-b-2 border-gray-100 w-full hover:bg-gray-200">
-                                <td class="p-2 w-44 max-w-44 truncate">
-                                    <span class="flex flex-row gap-2">
-                                        <a href="/task" class="flex flex-row">
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 text-blue-500">
-                                                <path stroke-linecap="round" stroke-linejoin="round" d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" />
-                                            </svg>
-                                        </a>
-                                        Task 3
-                                    </span>
-                                </td>
-                                <td class="p-2 w-60 max-w-60 truncate">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</td>
-                                <td class="p-2">
-                                    <select>
-                                        <option>TO_DO</option>
-                                        <option>IN_PROGRESS</option>
-                                        <option>DONE</option>
-                                    </select>
-                                </td>
-                                <td class="p-2">
-                                    <select>
-                                        <option>LOW</option>
-                                        <option>MEDIUM</option>
-                                        <option>HIGH</option>
-                                    </select>
-                                </td>
-                                <td class="p-2 w-40 max-w-40 truncate">2024-12-21</td>
-                                <td class="p-2">5</td>
-                                <td class="p-2"><img src="https://avatar.iran.liara.run/public/4" alt="" class="h-8 w-8 object-cover"></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <div>
-                    <div class="flex justify-start pb-2">
-                        <h2 class="text-xl font-bold">Done</h2>
-                    </div>
-                    <table class="w-full table-auto border-collapse">
-                        <thead>
-                            <tr class="border-b-2 border-gray-300">
-                                <th class="text-left p-2">Task</th>
-                                <th class="text-left p-2">Description</th>
-                                <th class="text-left p-2">Status</th>
-                                <th class="text-left p-2">Priority</th>
-                                <th class="text-left p-2">Date</th>
-                                <th class="text-left p-2">Comments</th>
-                                <th class="text-left p-2">User</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr class="border-b-2 border-gray-100 w-full hover:bg-gray-200">
-                                <td class="p-2 w-44 max-w-44 truncate">
-                                    <span class="flex flex-row gap-2">
-                                        <a href="/task" class="flex flex-row">
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 text-blue-500">
-                                                <path stroke-linecap="round" stroke-linejoin="round" d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" />
-                                            </svg>
-                                        </a>
-                                        Task 1
-                                    </span>
-                                </td>
-                                <td class="p-2 w-60 max-w-60 truncate">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</td>
-                                <td class="p-2">
-                                    <select>
-                                        <option>TO_DO</option>
-                                        <option>IN_PROGRESS</option>
-                                        <option>DONE</option>
-                                    </select>
-                                </td>
-                                <td class="p-2">
-                                    <select>
-                                        <option>LOW</option>
-                                        <option>MEDIUM</option>
-                                        <option>HIGH</option>
-                                    </select>
-                                </td>
-                                <td class="p-2 w-40 max-w-40 truncate">2024-12-21</td>
-                                <td class="p-2">5</td>
-                                <td class="p-2"><img src="https://avatar.iran.liara.run/public/4" alt="" class="h-8 w-8 object-cover"></td>
-                            </tr>
-                            <tr class="border-b-2 border-gray-100 w-full hover:bg-gray-200">
-                                <td class="p-2 w-44 max-w-44 truncate">
-                                    <span class="flex flex-row gap-2">
-                                        <a href="/task" class="flex flex-row">
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 text-blue-500">
-                                                <path stroke-linecap="round" stroke-linejoin="round" d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" />
-                                            </svg>
-                                        </a>
-                                        Task 2
-                                    </span>
-                                </td>
-                                <td class="p-2 w-60 max-w-60 truncate">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</td>
-                                <td class="p-2">
-                                    <select>
-                                        <option>TO_DO</option>
-                                        <option>IN_PROGRESS</option>
-                                        <option>DONE</option>
-                                    </select>
-                                </td>
-                                <td class="p-2">
-                                    <select>
-                                        <option>LOW</option>
-                                        <option>MEDIUM</option>
-                                        <option>HIGH</option>
-                                    </select>
-                                </td>
-                                <td class="p-2 w-40 max-w-40 truncate">2024-12-21</td>
-                                <td class="p-2">5</td>
-                                <td class="p-2"><img src="https://avatar.iran.liara.run/public/4" alt="" class="h-8 w-8 object-cover"></td>
-                            </tr>
-                            <tr class="border-b-2 border-gray-100 w-full hover:bg-gray-200">
-                                <td class="p-2 w-44 max-w-44 truncate">
-                                    <span class="flex flex-row gap-2">
-                                        <a href="/task" class="flex flex-row">
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6 text-blue-500">
-                                                <path stroke-linecap="round" stroke-linejoin="round" d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" />
-                                            </svg>
-                                        </a>
-                                        Task 3
-                                    </span>
-                                </td>
-                                <td class="p-2 w-60 max-w-60 truncate">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</td>
-                                <td class="p-2">
-                                    <select>
-                                        <option>TO_DO</option>
-                                        <option>IN_PROGRESS</option>
-                                        <option>DONE</option>
-                                    </select>
-                                </td>
-                                <td class="p-2">
-                                    <select>
-                                        <option>LOW</option>
-                                        <option>MEDIUM</option>
-                                        <option>HIGH</option>
-                                    </select>
-                                </td>
-                                <td class="p-2 w-40 max-w-40 truncate">2024-12-21</td>
-                                <td class="p-2">5</td>
-                                <td class="p-2"><img src="https://avatar.iran.liara.run/public/4" alt="" class="h-8 w-8 object-cover"></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <div>
-                    <div class="flex justify-start pb-2">
-                        <h2 class="text-xl font-bold">Comments</h2>
-                    </div>
-                    <div class="space-y-4">
-                        <div class="p-4 bg-white border shadow rounded">
-                            <div class="flex items-center space-x-2 mb-4">
-                                <img src="https://avatar.iran.liara.run/public/4" alt="" class="h-8 w-8 object-cover rounded-full">
-                                <span class="font-bold">User 1</span>
-                            </div>
-                            <p class="text-gray-600">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                            <p class="text-sm text-gray-600 text-right mt-2">2023-01-01</p>
-                        </div>
-                        <div class="p-4 bg-white border shadow rounded">
-                            <div class="flex items-center space-x-2 mb-4">
-                                <img src="https://avatar.iran.liara.run/public/76" alt="" class="h-8 w-8 object-cover rounded-full">
-                                <span class="font-bold">User 2</span>
-                            </div>
-                            <p class="text-gray-600">Integer nec odio. Praesent libero. Sed cursus ante dapibus diam.</p>
-                            <p class="text-sm text-gray-600 text-right mt-2">2023-01-02</p>
-                        </div>
-                        <div class="p-4 bg-white border shadow rounded">
-                            <div class="flex items-center space-x-2 mb-4">
-                                <img src="https://avatar.iran.liara.run/public/72" alt="" class="h-8 w-8 object-cover rounded-full">
-                                <span class="font-bold">User 3</span>
-                            </div>
-                            <p class="text-gray-600">Sed nisi. Nulla quis sem at nibh elementum imperdiet.</p>
-                            <p class="text-sm text-gray-600 text-right mt-2">2023-01-03</p>
-                        </div>
-                    </div>
-                    <div class="flex justify-end mt-4">
-                        <button class="px-4 py-2 bg-blue-500 text-white rounded">Add Comment</button>
-                    </div>
-                </div>
+            <div class="flex justify-end">
+                <p class="text-sm text-gray-600">Period from <span class="text-blue-500 font-bold">{{ project.startDate|date('Y-m-d') }}</span> to <span class="text-blue-500 font-bold">{{ project.endDate|date('Y-m-d') }}</span></p>
             </div>
         </div>
+
+        <div class="flex flex-col gap-10 w-full p-8 h-fit">
+            {% for status in taskStatuses %}
+                {% set tasks = project.tasks|filter(task => task.status.name == status.name) %}
+                {% if tasks|length > 0 %}
+                    <div class="border-2 border-blue-500 w-full p-8 flex flex-col bg-gray-100 rounded shadow">
+                        <div class="flex justify-start pb-2">
+                            <h2 class="text-xl font-bold">{{ status.value }}</h2>
+                        </div>
+                        <table class="w-full table-auto border-collapse">
+                            <thead>
+                                <tr class="border-b-2 border-gray-300">
+                                    <th class="text-left p-2">Task</th>
+                                    <th class="text-left p-2">Description</th>
+                                    <th class="text-left p-2">Status</th>
+                                    <th class="text-left p-2">Priority</th>
+                                    <th class="text-left p-2">Date</th>
+                                    <th class="text-left p-2">Comments</th>
+                                    <th class="text-left p-2">User</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for task in tasks %}
+                                    <tr class="border-b-2 border-gray-100 w-full h-full">
+                                        <td class="p-2 w-44 max-w-44 truncate">
+                                            <span class="flex flex-row gap-2">
+                                                <a href="{{ path('task', {id: task.id}) }}" class="flex flex-row">
+                                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="size-6 text-blue-500">
+                                                        <path stroke-linecap="round" stroke-linejoin="round" d="m11.25 11.25.041-.02a.75.75 0 0 1 1.063.852l-.708 2.836a.75.75 0 0 0 1.063.853l.041-.021M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Zm-9-3.75h.008v.008H12V8.25Z" />
+                                                    </svg>
+                                                </a>
+                                                <span class="w-full truncate {% if status.name == 'DONE' %} opacity-25 {% endif %}">
+                                                    {{ task.name }}
+                                                </span>
+                                            </span>
+                                        </td>
+                                        <td class="p-2 w-60 max-w-60 truncate {% if status.name == 'DONE' %} opacity-25 {% endif %}">{{ task.description }}</td>
+                                        <td class="p-2 {% if status.name == 'DONE' %} opacity-25 {% endif %}">{{ task.status.value }}</td>
+                                        <td class="p-2 {% if status.name == 'DONE' %} opacity-25 {% endif %}">{{ task.priority.value }}</td>
+                                        <td class="p-2 w-40 max-w-40 truncate {% if status.name == 'DONE' %} opacity-25 {% endif %}">{{ task.dueDate|date('Y-m-d') }}</td>
+                                        <td class="p-2 {% if status.name == 'DONE' %} opacity-25 {% endif %}">{{ task.comments|length }}</td>
+                                        <td class="p-2 {% if status.name == 'DONE' %} opacity-25 {% endif %}"><img src="{{ task.assignedTo.profilePicture }}" alt="" class="h-8 w-8 object-cover"></td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        </div>
+
+        <div class="w-full p-8 bg-gray-100 flex flex-col shadow">
+            <div class="flex justify-start pb-2">
+                <h2 class="text-xl font-bold">Comments</h2>
+            </div>
+            <div class="space-y-4">
+                {% for comment in project.comments %}
+                    {% include('parts/comment.html.twig') %}
+                {% endfor %}
+            </div>
+            <div class="flex justify-end mt-4">
+                <button class="px-4 py-2 bg-blue-500 text-white rounded">Add Comment</button>
+            </div>
+        </div>
+    </div>
 {% endblock %}
