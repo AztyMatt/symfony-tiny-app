@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
@@ -55,6 +56,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\ManyToMany(targetEntity: Team::class, inversedBy: 'members')]
     private Collection $teams;
+
+    #[ORM\Column(type: 'uuid', nullable: true)]
+    private ?Uuid $resetToken = null;
 
     public function __construct()
     {
@@ -280,6 +284,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         if ($this->teams->removeElement($team)) {
             $team->removeMember($this);
         }
+
+        return $this;
+    }
+
+    public function getResetToken(): ?Uuid
+    {
+        return $this->resetToken;
+    }
+
+    public function setResetToken(?Uuid $resetToken): static
+    {
+        $this->resetToken = $resetToken;
 
         return $this;
     }

@@ -24,7 +24,7 @@
                 <div>
                     <label for="password" class="block text-gray-700">Password</label>
                     <input type="password" id="password" name="_password" class="w-full p-2 border rounded" required autocomplete="current-password">
-                    <a href="#" class="text-blue-500">Forgot Password?</a>
+                    <a href="{{ path('app_forgot') }}" class="text-blue-500">Forgot Password?</a>
                 </div>
                 <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
                 {% if error %}
