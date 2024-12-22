@@ -15,6 +15,7 @@ use App\Enum\TaskPriorityEnum;
 use App\Entity\ProjectUser;
 use App\Enum\ProjectUserRoleEnum;
 use App\Entity\Comment;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class AppFixtures extends Fixture
 {
@@ -204,7 +205,7 @@ class AppFixtures extends Fixture
             $user = new User();
             $user->setUsername($userData['username']);
             $user->setEmail($userData['email']);
-            $user->setPassword('password');
+            $user->setPlainPassword('password');
             $user->setProfilePicture('https://avatar.iran.liara.run/public/'.rand(1, 100));
 
             $manager->persist($user);

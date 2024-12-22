@@ -22,11 +22,13 @@
                     <label for="repeat_password" class="block text-gray-700">Repeat Password</label>
                     <input type="password" id="repeat_password" name="repeat_password" class="w-full p-2 border rounded" required>
                 </div>
-                {# <div>
-                    <span class="text-red-500" id="error-message">Error</span>
-                </div> #}
+                {% if error %}
+                    <div>
+                        <span class="text-red-500">{{ error }}</span>
+                    </div>
+                {% endif %}
                 <div class="flex justify-end gap-2">
-                    <a href="{{ path('login') }}" class="px-4 py-2 rounded border-2 border-gray-100 text-gray-500">Login</a>
+                    <a href="{{ path('app_login') }}" class="px-4 py-2 rounded border-2 border-gray-100 text-gray-500">Login</a>
                     <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded">Register</button>
                 </div>
             </form>
