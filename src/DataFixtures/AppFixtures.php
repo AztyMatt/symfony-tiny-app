@@ -29,16 +29,16 @@ class AppFixtures extends Fixture
         }
 
         $users = [
-            ['username' => 'alice', 'email' => 'alice@example.com'],
-            ['username' => 'bob', 'email' => 'bob@example.com'],
-            ['username' => 'charlie', 'email' => 'charlie@example.com'],
-            ['username' => 'dave', 'email' => 'dave@example.com'],
-            ['username' => 'eve', 'email' => 'eve@example.com'],
-            ['username' => 'frank', 'email' => 'frank@example.com'],
-            ['username' => 'grace', 'email' => 'grace@example.com'],
-            ['username' => 'heidi', 'email' => 'heidi@example.com'],
-            ['username' => 'ivan', 'email' => 'ivan@example.com'],
-            ['username' => 'judy', 'email' => 'judy@example.com'],
+            ['username' => 'Alice', 'email' => 'alice@example.com'],
+            ['username' => 'Bob', 'email' => 'bob@example.com'],
+            ['username' => 'Charlie', 'email' => 'charlie@example.com'],
+            ['username' => 'Dave', 'email' => 'dave@example.com'],
+            ['username' => 'Eve', 'email' => 'eve@example.com'],
+            ['username' => 'Frank', 'email' => 'frank@example.com'],
+            ['username' => 'Grace', 'email' => 'grace@example.com'],
+            ['username' => 'Heidi', 'email' => 'heidi@example.com'],
+            ['username' => 'Ivan', 'email' => 'ivan@example.com'],
+            ['username' => 'Judy', 'email' => 'judy@example.com'],
         ];
 
         $teams = [
@@ -215,6 +215,15 @@ class AppFixtures extends Fixture
             $manager->persist($user);
             $userEntities[] = $user;
         }
+
+        // Create an admin user
+        $adminUser = new User();
+        $adminUser->setUsername('Admin');
+        $adminUser->setEmail('admin@next-task.com');
+        $adminUser->setRoles(['ROLE_ADMIN']);
+        $adminUser->setPlainPassword('n3xtT@sk');
+        $adminUser->setProfilePicture('https://avatar.iran.liara.run/public/'.rand(1, 100));
+        $manager->persist($adminUser);
 
         // Projects
         $roles = ProjectUserRoleEnum::cases();
