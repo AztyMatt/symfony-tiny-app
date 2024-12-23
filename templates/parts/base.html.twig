@@ -9,36 +9,50 @@
         {% endblock %}
         {% block javascripts %}
         {% endblock %}
-                    <script>
-    function updateTeamImage(select) {
-        var selectedOption = select.options[select.selectedIndex];
-        var imageSrc = selectedOption.getAttribute('data-image');
-        document.getElementById('team-image').src = imageSrc;
-        updateProjects(select.value);
-        localStorage.setItem('selectedTeam', select.value);
-    }
-
-    function updateProjects(teamId) {
-        var projects = document.querySelectorAll('.project-item');
-        projects.forEach(function(project) {
-            if (project.getAttribute('data-team-id') === teamId) {
-                project.style.display = 'flex';
-            } else {
-                project.style.display = 'none';
+    
+        <script>
+            function updateTeamImage(select) {
+                var selectedOption = select.options[select.selectedIndex];
+                if (selectedOption) {
+                    var imageSrc = selectedOption.getAttribute('data-image');
+                    document.getElementById('team-image').src = imageSrc;
+                    updateProjects(select.value);
+                    localStorage.setItem('selectedTeam', select.value);
+                }
             }
-        });
-    }
 
-    // Set default image and projects on page load
-    document.addEventListener('DOMContentLoaded', function() {
-        var select = document.getElementById('team');
-        var savedTeam = localStorage.getItem('selectedTeam');
-        if (savedTeam) {
-            select.value = savedTeam;
-        }
-        updateTeamImage(select);
-    });
-    </script>
+            function updateProjects(teamId) {
+                var projects = document.querySelectorAll('.project-item');
+                projects.forEach(function(project) {
+                    if (project.getAttribute('data-team-id') === teamId) {
+                        project.style.display = 'flex';
+                    } else {
+                        project.style.display = 'none';
+                    }
+                });
+            }
+
+            // Set default image and projects on page load
+            document.addEventListener('DOMContentLoaded', function() {
+                var select = document.getElementById('team');
+                if (select && select.options.length > 0) {
+                    var savedTeam = localStorage.getItem('selectedTeam');
+                    var validTeam = false;
+                    for (var i = 0; i < select.options.length; i++) {
+                        if (select.options[i].value === savedTeam) {
+                            validTeam = true;
+                            break;
+                        }
+                    }
+                    if (!validTeam) {
+                        savedTeam = select.options[0].value;
+                        localStorage.setItem('selectedTeam', savedTeam);
+                    }
+                    select.value = savedTeam;
+                    updateTeamImage(select);
+                }
+            });
+        </script>
     </head>
     <body class="h-screen flex flex-col overflow-hidden w-full">
         {% include 'parts/header.html.twig' %}

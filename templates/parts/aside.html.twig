@@ -2,7 +2,7 @@
     <form class="flex flex-col space-y-4 border-blue-600 border-b-2">
         <div class="flex items-center space-x-4 p-4">
             {% if app.user.teams is not empty %}
-                <img id="team-image" src="Logo of your team" alt="Team Image" class="h-8 w-8 object-contain rounded" />
+                <img id="team-image" src="{{ app.user.teams[0].logo }}" alt="Team Image" class="h-8 w-8 object-contain rounded" />
                 <select id="team" name="team" class="flex-grow p-y-2 h-full bg-blue-500" onchange="updateTeamImage(this)">
                     {% for team in app.user.teams %}
                         <option value="{{ team.id }}" data-image="{{ team.logo }}">{{ team.name }}</option>
@@ -16,9 +16,9 @@
     <div class="h-full">
         <ul class="overflow-y-auto h-full pb-2">
             {% for team in app.user.teams %}
-                {% for project in team.projects %}
+                {% for project in team.projects|filter(project => project.members|filter(projectMember => projectMember.member == app.user) is not empty) %}
                     <li class="project-item flex justify-between {% if project.status.name ==  'ARCHIVED' %} opacity-50 {% endif %} hover:bg-blue-600" data-team-id="{{ team.id }}">
-                        <a href="/project/{{ project.id }}" class="flex flex-col justify-between gap-1 w-full p-4">
+                        <a href="{{ path('project', {'id': project.id}) }}" class="flex flex-col justify-between gap-1 w-full p-4">
                             <span class="font-bold">{{ project.name }}</span>
                             <span class="text-sm">({{ project.status.value }})</span>
                         </a>

@@ -25,19 +25,12 @@ class ProjectController extends AbstractController
 
         $taskStatuses = TaskStatusEnum::cases();
 
-        // $members = $project->getMembers();
-        // $memberProfilePictures = [];
-
-        // foreach ($members as $member) {
-        //     if ($member instanceof User) {
-        //         $memberProfilePictures[] = $member->getProfilePicture();
-        //     }
-        // }
+        $projectMembers = $project->getMembers();
 
         return $this->render('project.html.twig', [
             'project' => $project,
             'taskStatuses' => $taskStatuses,
-            // 'memberProfilePictures' => $memberProfilePictures,
+            'projectMembers' => $projectMembers,
         ]);
     }
 }

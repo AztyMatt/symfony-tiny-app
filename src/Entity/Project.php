@@ -156,6 +156,10 @@ class Project
 
     public function addMember(ProjectUser $member): static
     {
+        if (!$member->getMember()->getTeams()->contains($this->team)) {
+            throw new \InvalidArgumentException('The user must belong to the same team as the project.');
+        }
+
         if (!$this->members->contains($member)) {
             $this->members->add($member);
             $member->setProject($this);

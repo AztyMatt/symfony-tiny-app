@@ -225,26 +225,41 @@ class AppFixtures extends Fixture
             $project->setStartDate(new \DateTimeImmutable($projectData['startDate']));
             $project->setEndDate(new \DateTime($projectData['endDate']));
             $project->setStatus($projectData['status']);
-            $project->setTeam($teamEntities[array_rand($teamEntities)]);
+            $projectTeam = $teamEntities[array_rand($teamEntities)];
+            $project->setTeam($projectTeam);
 
             $manager->persist($project);
 
             // Users assigned to projects
-            $assignedUsers = (array)array_rand($userEntities, rand(1, 3));
+            $assignedUsers = array_filter($userEntities, function($user) use ($projectTeam) {
+                return $user->getTeams()->contains($projectTeam);
+            });
+            $assignedUsers = array_values($assignedUsers); // Re-index array
+
             $projectUsers = [];
-            foreach ($assignedUsers as $userIndex) {
+            $userIndices = array_rand($assignedUsers, min(3, count($assignedUsers)));
+            if (!is_array($userIndices)) {
+                $userIndices = [$userIndices];
+            }
+            foreach ($userIndices as $userIndex) {
                 $projectUser = new ProjectUser();
                 $projectUser->setProject($project);
-                $projectUser->setMember($userEntities[$userIndex]);
+                $projectUser->setMember($assignedUsers[$userIndex]);
                 $projectUser->setRole($roles[array_rand($roles)]);
                 
                 $manager->persist($projectUser);
-                $projectUsers[] = $userEntities[$userIndex];
+                $projectUsers[] = $assignedUsers[$userIndex];
+
+                // Add the member to the project
+                $project->addMember($projectUser);
             }
 
             // Tasks assigned to projects
-            $assignedTasks = (array)array_rand($tasks, rand(1, count($tasks)));
-            foreach ($assignedTasks as $taskIndex) {
+            $taskIndices = array_rand($tasks, min(count($tasks), rand(1, count($tasks))));
+            if (!is_array($taskIndices)) {
+                $taskIndices = [$taskIndices];
+            }
+            foreach ($taskIndices as $taskIndex) {
                 $taskData = $tasks[$taskIndex];
                 $task = new Task();
                 $task->setName($taskData['name']);
@@ -258,8 +273,11 @@ class AppFixtures extends Fixture
                 $manager->persist($task);
 
                 // Comments for tasks
-                $assignedComments = (array)array_rand($comments, rand(1, 3));
-                foreach ($assignedComments as $commentIndex) {
+                $commentIndices = array_rand($comments, min(3, count($comments)));
+                if (!is_array($commentIndices)) {
+                    $commentIndices = [$commentIndices];
+                }
+                foreach ($commentIndices as $commentIndex) {
                     $comment = new Comment();
                     $comment->setContent($comments[$commentIndex]);
                     $comment->setAuthor($projectUsers[array_rand($projectUsers)]);
@@ -270,8 +288,11 @@ class AppFixtures extends Fixture
             }
 
             // Comments for projects
-            $assignedComments = (array)array_rand($comments, rand(1, 3));
-            foreach ($assignedComments as $commentIndex) {
+            $commentIndices = array_rand($comments, min(3, count($comments)));
+            if (!is_array($commentIndices)) {
+                $commentIndices = [$commentIndices];
+            }
+            foreach ($commentIndices as $commentIndex) {
                 $comment = new Comment();
                 $comment->setContent($comments[$commentIndex]);
                 $comment->setAuthor($projectUsers[array_rand($projectUsers)]);

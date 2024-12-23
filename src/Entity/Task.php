@@ -126,7 +126,15 @@ class Task
     }
 
     public function setAssignedTo(?User $assignedTo): static
-    {
+    {   
+        $isMember = $this->project->getMembers()->exists(function($key, $member) use ($assignedTo) {
+            return $member->getMember() === $assignedTo;
+        });
+
+        if (!$isMember) {
+            throw new \InvalidArgumentException('The assigned user must be part of the project.');
+        }
+
         $this->assignedTo = $assignedTo;
 
         return $this;
