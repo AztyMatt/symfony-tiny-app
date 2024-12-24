@@ -31,7 +31,7 @@ class Team
     #[ORM\OneToMany(targetEntity: Project::class, mappedBy: 'team', orphanRemoval: true)]
     private Collection $projects;
 
-    #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'teams')]
+    #[ORM\ManyToMany(targetEntity: User::class, inversedBy: 'teams', cascade: ['persist'])]
     private Collection $members;
 
     public function __construct()
@@ -62,7 +62,7 @@ class Team
         return $this->logo;
     }
 
-    public function setLogo(string $logo): static
+    public function setLogo(?string $logo): static
     {
         $this->logo = $logo;
 
@@ -119,30 +119,34 @@ class Team
         return $this->members;
     }
 
-    public function addMember(User $member): static
+    public function addMember(User $user): self
     {
-        if (!$this->members->contains($member)) {
-            $this->members->add($member);
-            $member->addTeam($this);
+        if (!$this->members->contains($user)) {
+            $this->members->add($user);
+            $user->addTeam($this); // Synchronise la relation du côté propriétaire
         }
-
+    
         return $this;
-    }
+    }    
 
-    public function removeMember(User $member): static
+    public function removeMember(User $user): self
     {
-        if ($this->members->removeElement($member)) {
-            $member->removeTeam($this);
+        if ($this->members->removeElement($user)) {
+            $user->removeTeam($this); // Synchronise la relation du côté propriétaire
         }
-
+    
         return $this;
-    }
+    }    
 
     #[ORM\PrePersist]
     public function onPrePersist()
     {
         if (!$this->creationDate) {
             $this->creationDate = new \DateTimeImmutable();
+        }
+
+        if (empty($this->logo)) {
+            $this->logo = 'https://ui-avatars.com/api/?rounded=false&size=128&bold=true&background=random&name=' . urlencode($this->name);
         }
     }
 }

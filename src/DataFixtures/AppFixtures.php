@@ -186,17 +186,6 @@ class AppFixtures extends Fixture
             'The project is on track.'
         ];
 
-        // Teams
-        $teamEntities = [];
-        foreach ($teams as $teamData) {
-            $team = new Team();
-            $team->setName($teamData['name']);
-            $team->setLogo('https://ui-avatars.com/api/?rounded=false&size=128&bold=true&background=random&name='.urlencode($teamData['name']));
-
-            $manager->persist($team);
-            $teamEntities[] = $team;
-        }
-
         // Users
         $userEntities = [];
         foreach ($users as $userData) {
@@ -206,14 +195,27 @@ class AppFixtures extends Fixture
             $user->setPlainPassword('password');
             $user->setProfilePicture('https://avatar.iran.liara.run/public/'.rand(1, 100));
 
-            // Assign teams to users
-            $assignedTeams = (array)array_rand($teamEntities, rand(1, 3));
-            foreach ($assignedTeams as $teamIndex) {
-                $user->addTeam($teamEntities[$teamIndex]);
-            }
-
             $manager->persist($user);
             $userEntities[] = $user;
+        }
+
+        // Teams
+        $teamEntities = [];
+        foreach ($teams as $teamData) {
+            $team = new Team();
+            $team->setName($teamData['name']);
+            
+            $manager->persist($team);
+            $teamEntities[] = $team;
+        }
+
+        // Assign teams to users
+        foreach ($userEntities as $user) {
+            $assignedTeams = (array)array_rand($teamEntities, rand(1, 3));
+            foreach ($assignedTeams as $teamIndex) {
+                $teamEntities[$teamIndex]->addMember($user);
+                $manager->persist($teamEntities[$teamIndex]);
+            }
         }
 
         // Create an admin user

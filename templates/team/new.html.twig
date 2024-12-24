@@ -1,0 +1,17 @@
+{% extends 'parts/base.html.twig' %}
+
+{% block title %}NextTask-Admin - New Team{% endblock %}
+
+{% block javascripts %}
+{% endblock %}
+
+{% block body %}
+    <div class="w-full flex flex-col items-center justify-center h-full bg-red">
+        <div class="p-4 bg-white border shadow rounded mt-8 w-1/3">
+            <h1 class="text-xl font-bold mb-4">New Team</h1>
+
+            {{ include('team/_form.html.twig', { userHidden: true }) }}
+
+        </div>
+    </div>
+{% endblock %}

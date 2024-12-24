@@ -5,6 +5,12 @@
 {% block javascripts %}
 {% endblock %}
 
+{% block aside %}
+    {% if app.user %}
+        {% include 'parts/aside.html.twig' %}
+    {% endif %}
+{% endblock %}
+
 {% block body %}
     <header class="p-4 w-full flex justify-between items-center border-b-2 border-gray-200 sticky top-0 bg-white">
         <h1 class="text-2xl font-bold">{{ task.name }}</h1>

@@ -5,12 +5,18 @@
 {% block javascripts %}
 {% endblock %}
 
+{% block aside %}
+    {% if app.user %}
+        {% include 'parts/aside.html.twig' %}
+    {% endif %}
+{% endblock %}
+
 {% block body %}
     <header class="p-4 w-full flex justify-between items-center border-b-2 border-gray-200 shadow sticky top-0 bg-white">
         <h1 class="text-2xl font-bold">{{ project.name }}</h1>
         <div class="flex space-x-4">
             {% for projectMember in projectMembers %}
-                <img src="{{ projectMember.member.profilePicture }}" alt="" class="h-8 w-8 object-cover">
+                <img src="{{ projectMember.member.profilePicture }}" alt="{{projectMember.member.username}} profile picture" class="h-8 w-8 object-cover">
             {% endfor %}
         </div>
     </header>

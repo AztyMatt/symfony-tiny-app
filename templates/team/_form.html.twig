@@ -1,0 +1,37 @@
+{% if userHidden is not defined %}
+    {% set userHidden = false %}
+{% endif %}
+{{ form_start(form) }}
+    <div class="space-y-4">
+        <div>
+            {{ form_label(form.name, 'Name', {'label_attr': {'class': 'block text-gray-700 font-bold'}}) }}
+            {{ form_widget(form.name, {'attr': {'class': 'w-full p-2 border rounded'}}) }}
+            <span class="text-red-500">{{ form_errors(form.name) }}</span>
+        </div>
+        <div>
+            {{ form_label(form.logo, 'Logo URL', {'label_attr': {'class': 'block text-gray-700 font-bold'}}) }}
+            {{ form_widget(form.logo, {'attr': {'class': 'w-full p-2 border rounded', 'type': 'url'}}) }}
+            <span class="text-red-500">{{ form_errors(form.logo) }}</span>
+        </div>
+        <div>
+            {{ form_label(form.members, 'Members', {'label_attr': {'class': 'block text-gray-700 font-bold'}}) }}
+            <div>
+                {% for child in form.members %}
+                    <div class="flex items-center">
+                        {{ form_widget(child, {'attr': {'class': 'mr-2', 
+                            'checked': userHidden and app.user.id == child.vars.value, 
+                            'disabled': userHidden and app.user.id == child.vars.value
+                        }}) }}
+                        {{ form_label(child, null, {'label_attr': {'class': 'text-gray-700'}}) }}
+                        <span class="text-red-500">{{ form_errors(child) }}</span>
+                    </div>
+                {% endfor %}
+            </div>
+            <span class="text-red-500">{{ form_errors(form.members) }}</span>
+        </div>
+    </div>
+    <div class="flex justify-end gap-2 mt-4">
+        <a href="{{ path('app_team_index') }}" class="px-4 py-2 rounded border-2 border-gray-300 text-gray-300 h-10 flex items-center">Back to list</a>
+        <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded h-10">{{ button_label|default('Save') }}</button>
+    </div>
+{{ form_end(form) }}

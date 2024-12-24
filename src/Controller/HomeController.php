@@ -13,4 +13,10 @@ class HomeController extends AbstractController
     {
         return $this->render('index.html.twig');
     }
+
+    #[Route('/admin', name: 'app_admin')]
+    public function selectTable(): Response
+    {
+        return $this->render('admin.html.twig');
+    }
 }

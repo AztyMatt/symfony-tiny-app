@@ -1,0 +1,59 @@
+{% extends 'parts/base.html.twig' %}
+
+{% block title %}NextTask-Admin - Team Dashboard{% endblock %}
+
+{% block javascripts %}
+{% endblock %}
+
+{% block body %}
+    <header class="p-4 w-full flex justify-between items-center border-b-2 border-gray-200 shadow sticky top-0 bg-white">
+        <h1 class="text-2xl font-bold">Team Dashboard</h1>
+    </header>
+
+    <div class="flex flex-col overflow-y-auto h-full w-full">
+        <div class="w-full p-8 bg-gray-100 flex flex-col gap-12 shadow">
+            <table class="w-full table-auto border-collapse">
+                <thead>
+                    <tr class="border-b-2 border-gray-300">
+                        <th class="text-left p-2">Id</th>
+                        <th class="text-left p-2">Name</th>
+                        <th class="text-left p-2">Logo</th>
+                        <th class="text-left p-2">Creation Date</th>
+                        <th class="text-left p-2">Members</th>
+                        <th class="text-left p-2">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for team in teams %}
+                    <tr class="border-b-2 border-gray-100 w-full h-full">
+                        <td class="p-2">{{ team.id }}</td>
+                        <td class="p-2">{{ team.name }}</td>
+                        <td class="p-2"><img src="{{ team.logo }}" alt="{{ team.name }} logo" class="h-8 w-8 object-cover"></td>
+                        <td class="p-2">{{ team.creationDate|date('Y-m-d H:i:s') }}</td>
+                        <td class="p-2">
+                            <div class="flex flex-row items-center gap-2">
+                                {% for member in team.members %}
+                                    <img src="{{ member.profilePicture }}" alt="{{ member.username }} profile picture" class="h-8 w-8 object-cover">
+                                {% endfor %}
+                            </div>
+                        </td>
+                        <td class="p-2 flex flex-row items-center">
+                            <a href="{{ path('app_team_show', {'id': team.id}) }}" class="px-4 py-2 bg-blue-500 text-white rounded mr-2 h-10 flex items-center">Show</a>
+                            <a href="{{ path('app_team_edit', {'id': team.id}) }}" class="px-4 py-2 bg-blue-500 text-white rounded mr-2 h-10 flex items-center">Edit</a>
+                            <span>|</span>
+                            {{ include('team/_delete_form.html.twig') }}
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="5" class="p-2 text-center">No records found</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            <div class="w-full flex justify-end">
+                <a href="{{ path('app_team_new') }}" class="px-4 py-2 bg-blue-500 text-white rounded h-10 flex items-center">Create new</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}

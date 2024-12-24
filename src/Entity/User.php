@@ -54,7 +54,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: 'json')]
     private array $roles = [];
 
-    #[ORM\ManyToMany(targetEntity: Team::class, inversedBy: 'members')]
+    #[ORM\ManyToMany(targetEntity: Team::class, mappedBy: 'members')]
     private Collection $teams;
 
     #[ORM\Column(type: 'uuid', nullable: true)]
@@ -269,24 +269,21 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->teams;
     }
 
-    public function addTeam(Team $team): static
+    public function addTeam(Team $team): self
     {
         if (!$this->teams->contains($team)) {
             $this->teams->add($team);
-            $team->addMember($this);
         }
-
+    
         return $this;
     }
-
-    public function removeTeam(Team $team): static
+    
+    public function removeTeam(Team $team): self
     {
-        if ($this->teams->removeElement($team)) {
-            $team->removeMember($this);
-        }
-
+        $this->teams->removeElement($team);
+    
         return $this;
-    }
+    }    
 
     public function getResetToken(): ?Uuid
     {

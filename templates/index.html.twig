@@ -5,6 +5,12 @@
 {% block javascripts %}
 {% endblock %}
 
+{% block aside %}
+    {% if app.user %}
+        {% include 'parts/aside.html.twig' %}
+    {% endif %}
+{% endblock %}
+
 {% block body %}
     <div class="w-fit flex flex-col items-center justify-center h-full gap-8">
         <div class="flex flex-col gap-1">

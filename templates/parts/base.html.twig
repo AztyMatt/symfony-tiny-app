@@ -57,9 +57,7 @@
     <body class="h-screen flex flex-col overflow-hidden w-full">
         {% include 'parts/header.html.twig' %}
         <main class="flex flex-row h-full overflow-hidden">
-            {% if app.user %}
-                {% include 'parts/aside.html.twig' %}
-            {% endif %}
+            {% block aside %}{% endblock %}
             <section class="w-full flex flex-col items-center justify-start h-full overflow-y-auto">
                 {% block body %}{% endblock %}
             </section>
