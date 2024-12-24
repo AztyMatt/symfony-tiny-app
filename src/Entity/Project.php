@@ -33,7 +33,7 @@ class Project
     private ?ProjectStatusEnum $status = ProjectStatusEnum::PLANNED;
 
     #[ORM\ManyToOne(inversedBy: 'projects')]
-    #[ORM\JoinColumn(nullable: false)]
+    // #[ORM\JoinColumn(nullable: false)]
     private ?Team $team = null;
 
     /**
@@ -180,7 +180,7 @@ class Project
         return $this;
     }
 
-        /**
+    /**
      * @return Collection<int, Task>
      */
     public function getTasks(): Collection

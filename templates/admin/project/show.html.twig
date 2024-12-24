@@ -1,0 +1,51 @@
+{% extends 'parts/base.html.twig' %}
+
+{% block title %}NextTask-Admin - Project {{ project.name }}{% endblock %}
+
+{% block javascripts %}
+{% endblock %}
+
+{% block body %}
+    <header class="p-4 w-full flex justify-between items-center border-b-2 border-gray-200 shadow sticky top-0 bg-white">
+        <h1 class="text-2xl font-bold">Project "{{ project.name }}"</h1>
+        <div class="flex flex-row items-center gap-2">
+            <img src="{{ project.team.logo }}" alt="{{ project.team.name }} logo" class="h-8 w-8 object-cover">
+            <h2 class="text-xl font-bold">{{ project.team.name }}</h2>
+        </div>
+    </header>
+
+    <div class="flex flex-col overflow-y-auto h-full w-full">
+        <div class="w-full p-8 bg-gray-100 flex flex-col gap-8 shadow">
+            <table class="w-full table-auto border-collapse">
+                <thead>
+                    <tr class="border-b-2 border-gray-300">
+                        <th class="text-left p-2">Id</th>
+                        <th class="text-left p-2">Name</th>
+                        <th class="text-left p-2">Description</th>
+                        <th class="text-left p-2">Start Date</th>
+                        <th class="text-left p-2">End Date</th>
+                        <th class="text-left p-2">Status</th>
+                        <th class="text-left p-2">Team</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="border-b-2 border-gray-100 w-full h-full align-top">
+                        <td class="p-2">{{ project.id }}</td>
+                        <td class="p-2 w-44 max-w-44 truncate">{{ project.name }}</td>
+                        <td class="p-2 w-96 max-w-96">{{ project.description }}</td>
+                        <td class="p-2">{{ project.startDate|date('Y-m-d') }}</td>
+                        <td class="p-2">{{ project.endDate|date('Y-m-d') }}</td>
+                        <td class="p-2">{{ project.status.value }}</td>
+                        <td class="p-2">{{ project.team.name }}</td>
+                    </tr>
+                </tbody>
+            </table>
+            <hr class="border border-gray-300">
+            <div class="w-full flex justify-end">
+                <a href="{{ path('app_project_index') }}" class="px-4 py-2 rounded border-2 border-gray-300 text-gray-500 h-10 flex items-center bg-white">Back to list</a>
+                <a href="{{ path('app_project_edit', {'id': project.id}) }}" class="px-4 py-2 bg-blue-500 text-white rounded ml-2 h-10 flex items-center">Edit</a>
+                {{ include('admin/project/_delete_form.html.twig') }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

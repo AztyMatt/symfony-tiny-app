@@ -14,9 +14,38 @@ class HomeController extends AbstractController
         return $this->render('index.html.twig');
     }
 
-    #[Route('/admin', name: 'app_admin')]
-    public function selectTable(): Response
+    #[IsGranted('IS_AUTHENTICATED_FULLY')]
+    #[Route('/project/{id}', name: 'project')]
+    public function project(int $id, ProjectRepository $projectRepository, UserRepository $userRepository): Response
     {
-        return $this->render('admin.html.twig');
+        $project = $projectRepository->find($id);
+
+        if (!$project) {
+            return $this->redirectToRoute('home');
+        }
+
+        $taskStatuses = TaskStatusEnum::cases();
+        $projectMembers = $project->getMembers();
+
+        return $this->render('project.html.twig', [
+            'project' => $project,
+            'taskStatuses' => $taskStatuses,
+            'projectMembers' => $projectMembers,
+        ]);
+    }
+
+    #[IsGranted('IS_AUTHENTICATED_FULLY')]
+    #[Route('/task/{id}', name: 'task')]
+    public function task(int $id, TaskRepository $taskRepository): Response
+    {
+        $task = $taskRepository->find($id);
+
+        if (!$task) {
+            return $this->redirectToRoute('home');
+        }
+
+        return $this->render('task.html.twig', [
+            'task' => $task,
+        ]);
     }
 }

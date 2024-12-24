@@ -1,0 +1,53 @@
+{{ form_start(form) }}
+    <div class="space-y-4">
+        <div>
+            {{ form_label(form.name, 'Name', {'label_attr': {'class': 'block text-gray-700 font-bold'}}) }}
+            {{ form_widget(form.name, {'attr': {'class': 'w-full p-2 border rounded'}}) }}
+            <span class="text-red-500">{{ form_errors(form.name) }}</span>
+        </div>
+        <div>
+            {{ form_label(form.description, 'Description', {'label_attr': {'class': 'block text-gray-700 font-bold'}}) }}
+            {{ form_widget(form.description, {'attr': {'class': 'w-full p-2 border rounded'}}) }}
+            <span class="text-red-500">{{ form_errors(form.description) }}</span>
+        </div>
+        <div>
+            {{ form_label(form.startDate, 'Start Date', {'label_attr': {'class': 'block text-gray-700 font-bold'}}) }}
+            {{ form_widget(form.startDate, {'attr': {'class': 'w-full p-2 border rounded', 'type': 'datetime-local'}}) }}
+            <span class="text-red-500">{{ form_errors(form.startDate) }}</span>
+        </div>
+        <div>
+            {{ form_label(form.endDate, 'End Date', {'label_attr': {'class': 'block text-gray-700 font-bold'}}) }}
+            {{ form_widget(form.endDate, {'attr': {'class': 'w-full p-2 border rounded', 'type': 'datetime-local'}}) }}
+            <span class="text-red-500">{{ form_errors(form.endDate) }}</span>
+        </div>
+        <div>
+            {{ form_label(form.status, 'Status', {'label_attr': {'class': 'block text-gray-700 font-bold'}}) }}
+            {{ form_widget(form.status, {'attr': {'class': 'w-full p-2 border rounded'}}) }}
+            <span class="text-red-500">{{ form_errors(form.status) }}</span>
+        </div>
+        <div>
+            {{ form_label(form.team, 'Team', {'label_attr': {'class': 'block text-gray-700 font-bold'}}) }}
+            {{ form_widget(form.team, {'attr': {'class': 'w-full p-2 border rounded'}}) }}
+            <span class="text-red-500">{{ form_errors(form.team) }}</span>
+        </div>
+        {% if form.members is defined %}
+            <div>
+                {{ form_label(form.members, 'Members', {'label_attr': {'class': 'block text-gray-700 font-bold'}}) }}
+                <div>
+                    {% for child in form.members %}
+                        <div class="flex items-center">
+                            {{ form_widget(child, {'attr': {'class': 'mr-2'}}) }}
+                            {{ form_label(child, null, {'label_attr': {'class': 'text-gray-700'}}) }}
+                            <span class="text-red-500">{{ form_errors(child) }}</span>
+                        </div>
+                    {% endfor %}
+                </div>
+                <span class="text-red-500">{{ form_errors(form.members) }}</span>
+            </div>
+        {% endif %}
+    </div>
+    <div class="flex justify-end gap-2 mt-4">
+        <a href="{{ path('app_project_index') }}" class="px-4 py-2 rounded border-2 border-gray-300 text-gray-500 h-10 flex items-center bg-white">Back to list</a>
+        <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded h-10">{{ button_label|default('Save') }}</button>
+    </div>
+{{ form_end(form) }}

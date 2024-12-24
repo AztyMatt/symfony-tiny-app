@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Admin;
 
 use App\Entity\Team;
 use App\Form\TeamType;
@@ -20,7 +20,7 @@ final class TeamController extends AbstractController
     #[Route(name: 'app_team_index', methods: ['GET'])]
     public function index(TeamRepository $teamRepository): Response
     {
-        return $this->render('team/index.html.twig', [
+        return $this->render('admin/team/index.html.twig', [
             'teams' => $teamRepository->findAll(),
         ]);
     }
@@ -47,7 +47,7 @@ final class TeamController extends AbstractController
             return $this->redirectToRoute('app_team_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('team/new.html.twig', [
+        return $this->render('admin/team/new.html.twig', [
             'team' => $team,
             'form' => $form->createView(),
         ]);
@@ -56,7 +56,7 @@ final class TeamController extends AbstractController
     #[Route('/{id}', name: 'app_team_show', methods: ['GET'])]
     public function show(Team $team): Response
     {
-        return $this->render('team/show.html.twig', [
+        return $this->render('admin/team/show.html.twig', [
             'team' => $team,
         ]);
     }
@@ -79,7 +79,7 @@ final class TeamController extends AbstractController
             return $this->redirectToRoute('app_team_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('team/edit.html.twig', [
+        return $this->render('admin/team/edit.html.twig', [
             'team' => $team,
             'form' => $form->createView(),
         ]);
