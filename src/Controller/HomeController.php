@@ -5,6 +5,10 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use App\Repository\ProjectRepository;
+use App\Repository\UserRepository;
+use App\Enum\TaskStatusEnum;
+use App\Repository\TaskRepository;
 
 class HomeController extends AbstractController
 {

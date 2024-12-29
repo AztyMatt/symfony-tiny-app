@@ -61,11 +61,22 @@ Use the following credentials to log in as an admin:
 
 ### Fixture Users
 
-The fixture creates several users. You can find the usernames and their common password in the fixture file located at `src/DataFixtures/AppFixtures.php`.
+### User Fixtures
 
-## Contributing
+The fixture creates several user accounts, all of which have the same password: `password`.  
+The available email addresses are:  
+- alice@example.com  
+- bob@example.com  
+- charlie@example.com  
+- dave@example.com  
+- eve@example.com  
+- frank@example.com  
+- grace@example.com  
+- heidi@example.com  
+- ivan@example.com  
+- judy@example.com  
 
-Feel free to fork the repository and submit pull requests.
+For more details, you can check the fixture file located at `src/DataFixtures/AppFixtures.php`.
 
 ## License
 
